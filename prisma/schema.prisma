@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Hello {
+  id    Int    @id @default(autoincrement())
+  name  String
+}
+
+enum Role {
+  TOURIST
+  GUIDE
+  ADMIN
+}
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  role       Role     @default(TOURIST)
+  bio        String?
+  profilePic String?
+  languages  String[] @default([])
+  expertise  String[] @default([])
+  dailyRate  Float?
+  preferences String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
