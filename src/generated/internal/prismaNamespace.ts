@@ -391,7 +391,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Hello: 'Hello',
-  User: 'User'
+  User: 'User',
+  Tour: 'Tour'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -407,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "hello" | "user"
+    modelProps: "hello" | "user" | "tour"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -559,6 +560,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Tour: {
+      payload: Prisma.$TourPayload<ExtArgs>
+      fields: Prisma.TourFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TourFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TourPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TourFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TourPayload>
+        }
+        findFirst: {
+          args: Prisma.TourFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TourPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TourFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TourPayload>
+        }
+        findMany: {
+          args: Prisma.TourFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TourPayload>[]
+        }
+        create: {
+          args: Prisma.TourCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TourPayload>
+        }
+        createMany: {
+          args: Prisma.TourCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TourCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TourPayload>[]
+        }
+        delete: {
+          args: Prisma.TourDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TourPayload>
+        }
+        update: {
+          args: Prisma.TourUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TourPayload>
+        }
+        deleteMany: {
+          args: Prisma.TourDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TourUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TourUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TourPayload>[]
+        }
+        upsert: {
+          args: Prisma.TourUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TourPayload>
+        }
+        aggregate: {
+          args: Prisma.TourAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTour>
+        }
+        groupBy: {
+          args: Prisma.TourGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TourGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TourCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TourCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -624,6 +699,22 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const TourScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  price: 'price',
+  duration: 'duration',
+  location: 'location',
+  images: 'images',
+  guideId: 'guideId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TourScalarFieldEnum = (typeof TourScalarFieldEnum)[keyof typeof TourScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -821,6 +912,7 @@ export interface PrismaClientOptions {
 export type GlobalOmitConfig = {
   hello?: Prisma.HelloOmit
   user?: Prisma.UserOmit
+  tour?: Prisma.TourOmit
 }
 
 /* Types for Logging */

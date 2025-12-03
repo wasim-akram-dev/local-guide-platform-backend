@@ -27,3 +27,8 @@ export type Hello = Prisma.HelloModel
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model Tour
+ * 
+ */
+export type Tour = Prisma.TourModel

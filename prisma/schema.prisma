@@ -10,8 +10,8 @@ datasource db {
 }
 
 model Hello {
-  id    Int    @id @default(autoincrement())
-  name  String
+  id   Int    @id @default(autoincrement())
+  name String
 }
 
 enum Role {
@@ -21,25 +21,40 @@ enum Role {
 }
 
 model User {
-  id         String   @id @default(uuid())
+  id         String  @id @default(uuid())
   name       String
-  email      String   @unique
+  email      String  @unique
   password   String
   profilePic String?
-  role       Role     @default(TOURIST)
+  role       Role    @default(TOURIST)
 
-   // Common fields
-  bio         String?
-  languages   String[] @default([])
+  // Common fields
+  bio       String?
+  languages String[] @default([])
 
   // Guide fields
-  expertise   String[] @default([])
-  dailyRate   Float?
-  isVerified  Boolean  @default(false)
+  expertise  String[] @default([])
+  dailyRate  Float?
+  isVerified Boolean  @default(false)
 
   // Tourist fields
   preferences String[] @default([])
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tours     Tour[]
+}
+
+model Tour {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  price       Float
+  duration    String // e.g. "4 hours", "2 days"
+  location    String
+  images      String[] @default([])
+  guideId     String
+  guide       User     @relation(fields: [guideId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
