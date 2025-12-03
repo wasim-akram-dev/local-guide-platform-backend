@@ -44,6 +44,9 @@ model User {
   userBookings  Booking[] @relation("UserBookings") // tourist bookings
   guideBookings Booking[] @relation("GuideBookings") // guide received bookings
 
+  reviewsGiven    Review[] @relation("ReviewUser") // tourist reviews
+  reviewsReceived Review[] @relation("ReviewGuide") // guide ratings
+
   tours Tour[]
 
   createdAt DateTime @default(now())
@@ -63,6 +66,7 @@ model Tour {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   bookings    Booking[]
+  reviews     Review[]
 }
 
 model Booking {
@@ -87,6 +91,26 @@ model Booking {
 enum BookingStatus {
   PENDING
   APPROVED
+  CONFIRMED
+  COMPLETED
   REJECTED
   CANCELED
+}
+
+
+model Review {
+  id String @id @default(uuid())
+
+  userId  String // reviewer (tourist)
+  guideId String // guide being reviewed
+  tourId  String // tour that was taken
+
+  rating  Int // 1–5
+  comment String?
+
+  user  User @relation("ReviewUser", fields: [userId], references: [id])
+  guide User @relation("ReviewGuide", fields: [guideId], references: [id])
+  tour  Tour @relation(fields: [tourId], references: [id])
+
+  createdAt DateTime @default(now())
 }

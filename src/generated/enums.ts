@@ -21,6 +21,8 @@ export type Role = (typeof Role)[keyof typeof Role]
 export const BookingStatus = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
+  CONFIRMED: 'CONFIRMED',
+  COMPLETED: 'COMPLETED',
   REJECTED: 'REJECTED',
   CANCELED: 'CANCELED'
 } as const
