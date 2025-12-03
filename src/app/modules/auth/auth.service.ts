@@ -3,21 +3,20 @@ import config from "../../../config";
 import ApiError from "../../errors/ApiError";
 import { jwtHelper } from "../../helper/jwtHelper";
 import prisma from "../../shared/prisma";
-
-type RegisterPayload = {
-  name: string;
-  email: string;
-  password: string;
-  role?: "TOURIST" | "GUIDE";
-};
-
-type LoginPayload = {
-  email: string;
-  password: string;
-};
+import { LoginPayload, RegisterPayload } from "../../types/common";
 
 const register = async (payload: RegisterPayload) => {
-  const { name, email, password, role = "TOURIST" } = payload;
+  const {
+    name,
+    email,
+    password,
+    role,
+    bio,
+    languages,
+    expertise,
+    dailyRate,
+    preferences,
+  } = payload;
 
   const existing = await prisma.user.findUnique({ where: { email } });
 
@@ -29,18 +28,29 @@ const register = async (payload: RegisterPayload) => {
 
   const user = await prisma.user.create({
     data: {
-      name,
-      email,
+      name: name,
+      email: email,
       password: hashed,
-      role,
+      role: role === "GUIDE" ? "GUIDE" : "TOURIST",
+      bio: bio,
+      languages: languages ?? [],
+      expertise: expertise ?? [],
+      dailyRate: dailyRate ?? null,
+      preferences: preferences ?? [],
     },
     select: {
       id: true,
       name: true,
       email: true,
       role: true,
+      profilePic: true,
+      bio: true,
+      languages: true,
+      expertise: true,
+      dailyRate: true,
+      isVerified: true,
+      preferences: true,
       createdAt: true,
-      updatedAt: true,
     },
   });
 
@@ -80,6 +90,7 @@ const login = async (payload: LoginPayload) => {
     name: user.name,
     email: user.email,
     role: user.role,
+    // profilePic: user.profilePic,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
   };
@@ -95,11 +106,12 @@ const me = async (userId: string) => {
       name: true,
       email: true,
       role: true,
-      bio: true,
       profilePic: true,
+      bio: true,
       languages: true,
       expertise: true,
       dailyRate: true,
+      isVerified: true,
       preferences: true,
       createdAt: true,
       updatedAt: true,

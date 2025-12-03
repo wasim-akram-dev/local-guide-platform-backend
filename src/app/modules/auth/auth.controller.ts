@@ -54,12 +54,14 @@ const login = catchAsync(async (req: Request, res: Response) => {
     statusCode: 200,
     success: true,
     message: "Logged in successfully",
-    data: { user },
+    data: user,
   });
 });
 
 const me = catchAsync(async (req: any, res: Response) => {
   const accessToken = req.cookies.accessToken || req.headers.authorization;
+
+  if (!accessToken) throw new ApiError(401, "Not authenticated");
 
   console.log("from me > auth controller:", accessToken);
 
@@ -67,6 +69,8 @@ const me = catchAsync(async (req: any, res: Response) => {
     accessToken,
     config.jwt.access_secret
   );
+
+  if (!decodedData) throw new ApiError(401, "Not authenticated");
 
   const user = decodedData;
   console.log("user from auth.controller:me", user);

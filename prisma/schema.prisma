@@ -25,13 +25,21 @@ model User {
   name       String
   email      String   @unique
   password   String
-  role       Role     @default(TOURIST)
-  bio        String?
   profilePic String?
-  languages  String[] @default([])
-  expertise  String[] @default([])
-  dailyRate  Float?
-  preferences String?
+  role       Role     @default(TOURIST)
+
+   // Common fields
+  bio         String?
+  languages   String[] @default([])
+
+  // Guide fields
+  expertise   String[] @default([])
+  dailyRate   Float?
+  isVerified  Boolean  @default(false)
+
+  // Tourist fields
+  preferences String[] @default([])
+
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
