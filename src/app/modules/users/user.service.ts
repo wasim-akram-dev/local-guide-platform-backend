@@ -1,17 +1,4 @@
-import bcrypt from "bcryptjs";
 import prisma from "../../shared/prisma";
-
-const createUser = async (payload: any) => {
-  const hashedPassword = await bcrypt.hash(payload.password, 10);
-
-  const userData = {
-    ...payload,
-    password: hashedPassword,
-  };
-
-  const user = await prisma.user.create({ data: userData });
-  return user;
-};
 
 const getUserById = async (id: string) => {
   const user = await prisma.user.findUnique({ where: { id } });
@@ -32,7 +19,6 @@ const getAllUsers = async () => {
 };
 
 export const UsersServices = {
-  createUser,
   getUserById,
   updateUser,
   getAllUsers,

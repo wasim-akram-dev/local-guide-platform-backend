@@ -1,18 +1,7 @@
 import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
 import sendResponse from "../../shared/sendResponse";
-import { UsersServices } from "./users.service";
-
-const createUser = catchAsync(async (req: Request, res: Response) => {
-  const result = await UsersServices.createUser(req.body);
-
-  sendResponse(res, {
-    statusCode: 201,
-    success: true,
-    message: "User created successfully",
-    data: result,
-  });
-});
+import { UsersServices } from "./user.service";
 
 const getUser = catchAsync(async (req: Request, res: Response) => {
   const result = await UsersServices.getUserById(req.params.id);
@@ -48,7 +37,6 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const UsersControllers = {
-  createUser,
   getUser,
   updateUser,
   getAllUsers,

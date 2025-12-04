@@ -1,17 +1,13 @@
 import express from "express";
+import authGuard from "../../middlewares/authGuard";
 import validateRequest from "../../middlewares/validateRequest";
-import { UsersControllers } from "./users.controller";
-import { createUserSchema, updateUserSchema } from "./users.validation";
+import { UsersControllers } from "./user.controller";
+import { updateUserSchema } from "./user.validation";
 
 const router = express.Router();
 
 router.get("/:id", UsersControllers.getUser);
-router.get("/", UsersControllers.getAllUsers);
-router.post(
-  "/",
-  validateRequest(createUserSchema),
-  UsersControllers.createUser
-);
+router.get("/", authGuard("ADMIN"), UsersControllers.getAllUsers);
 router.patch(
   "/:id",
   validateRequest(updateUserSchema),

@@ -9,11 +9,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Hello {
-  id   Int    @id @default(autoincrement())
-  name String
-}
-
 enum Role {
   TOURIST
   GUIDE
@@ -41,76 +36,91 @@ model User {
   preferences String[] @default([])
 
   // Relations
-  userBookings  Booking[] @relation("UserBookings") // tourist bookings
-  guideBookings Booking[] @relation("GuideBookings") // guide received bookings
+  touristBookings Booking[] @relation("TouristBookings") // tourist bookings
+  guideBookings   Booking[] @relation("GuideBookings") // guide received bookings
 
   reviewsGiven    Review[] @relation("ReviewUser") // tourist reviews
   reviewsReceived Review[] @relation("ReviewGuide") // guide ratings
 
-  tours Tour[]
+  listings Listing[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Tour {
-  id          String    @id @default(uuid())
-  title       String
-  description String
-  price       Float
-  duration    String // e.g. "4 hours", "2 days"
-  location    String
-  images      String[]  @default([])
-  guideId     String
-  guide       User      @relation(fields: [guideId], references: [id])
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  bookings    Booking[]
-  reviews     Review[]
-}
+model Listing {
+  id           String   @id @default(uuid())
+  title        String
+  description  String
+  itinerary    String
+  tourFee      Float
+  duration     Int
+  meetingPoint String
+  maxGroupSize Int
+  images       String[]
+  city         String
+  category     String
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-model Booking {
-  id String @id @default(uuid())
+  guideId String
+  guide   User   @relation(fields: [guideId], references: [id])
 
-  tourId  String
-  userId  String // booker (tourist)
-  guideId String // tour owner guide
-
-  date   DateTime
-  status BookingStatus @default(PENDING)
-
-  // Relations (relation names must be unique)
-  tour  Tour @relation(fields: [tourId], references: [id])
-  user  User @relation("UserBookings", fields: [userId], references: [id])
-  guide User @relation("GuideBookings", fields: [guideId], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  bookings Booking[]
+  reviews  Review[]
 }
 
 enum BookingStatus {
   PENDING
-  APPROVED
-  CONFIRMED
-  COMPLETED
+  ACCEPTED
   REJECTED
-  CANCELED
+  CANCELLED
+  COMPLETED
 }
 
+model Booking {
+  id             String        @id @default(uuid())
+  listingId      String
+  listing        Listing       @relation(fields: [listingId], references: [id])
+  touristId      String
+  tourist        User          @relation("TouristBookings", fields: [touristId], references: [id])
+  guideId        String
+  guide          User          @relation("GuideBookings", fields: [guideId], references: [id])
+  date           DateTime
+  numberOfPeople Int
+  totalPrice     Float
+  status         BookingStatus @default(PENDING)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  payments       Payment[]
+}
 
 model Review {
   id String @id @default(uuid())
 
-  userId  String // reviewer (tourist)
-  guideId String // guide being reviewed
-  tourId  String // tour that was taken
+  userId    String // reviewer (tourist)
+  guideId   String // guide being reviewed
+  tourId    String // tour that was taken
+  listingId String
 
   rating  Int // 1–5
   comment String?
 
-  user  User @relation("ReviewUser", fields: [userId], references: [id])
-  guide User @relation("ReviewGuide", fields: [guideId], references: [id])
-  tour  Tour @relation(fields: [tourId], references: [id])
+  user    User    @relation("ReviewUser", fields: [userId], references: [id])
+  guide   User    @relation("ReviewGuide", fields: [guideId], references: [id])
+  listing Listing @relation(fields: [listingId], references: [id])
 
   createdAt DateTime @default(now())
+}
+
+model Payment {
+  id            String   @id @default(uuid())
+  amount        Float
+  transactionId String
+  status        String
+  createdAt     DateTime @default(now())
+
+  bookingId String
+  booking   Booking @relation(fields: [bookingId], references: [id])
 }

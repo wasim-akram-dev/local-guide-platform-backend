@@ -5,7 +5,7 @@ export const registerSchema = z.object({
   email: z.string().email("Invalid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   profilePic: z.string().optional(),
-  role: z.enum(["TOURIST", "GUIDE"]).default("TOURIST"),
+  role: z.enum(["TOURIST", "GUIDE", "ADMIN"]).default("TOURIST"),
 
   // Optional common profile fields
   bio: z.string().optional(),

@@ -276,11 +276,11 @@ export type UserWhereInput = {
   preferences?: Prisma.StringNullableListFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  userBookings?: Prisma.BookingListRelationFilter
+  touristBookings?: Prisma.BookingListRelationFilter
   guideBookings?: Prisma.BookingListRelationFilter
   reviewsGiven?: Prisma.ReviewListRelationFilter
   reviewsReceived?: Prisma.ReviewListRelationFilter
-  tours?: Prisma.TourListRelationFilter
+  listings?: Prisma.ListingListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -298,11 +298,11 @@ export type UserOrderByWithRelationInput = {
   preferences?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  userBookings?: Prisma.BookingOrderByRelationAggregateInput
+  touristBookings?: Prisma.BookingOrderByRelationAggregateInput
   guideBookings?: Prisma.BookingOrderByRelationAggregateInput
   reviewsGiven?: Prisma.ReviewOrderByRelationAggregateInput
   reviewsReceived?: Prisma.ReviewOrderByRelationAggregateInput
-  tours?: Prisma.TourOrderByRelationAggregateInput
+  listings?: Prisma.ListingOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -323,11 +323,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   preferences?: Prisma.StringNullableListFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  userBookings?: Prisma.BookingListRelationFilter
+  touristBookings?: Prisma.BookingListRelationFilter
   guideBookings?: Prisma.BookingListRelationFilter
   reviewsGiven?: Prisma.ReviewListRelationFilter
   reviewsReceived?: Prisma.ReviewListRelationFilter
-  tours?: Prisma.TourListRelationFilter
+  listings?: Prisma.ListingListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -387,11 +387,11 @@ export type UserCreateInput = {
   preferences?: Prisma.UserCreatepreferencesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  userBookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  touristBookings?: Prisma.BookingCreateNestedManyWithoutTouristInput
   guideBookings?: Prisma.BookingCreateNestedManyWithoutGuideInput
   reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewsReceived?: Prisma.ReviewCreateNestedManyWithoutGuideInput
-  tours?: Prisma.TourCreateNestedManyWithoutGuideInput
+  listings?: Prisma.ListingCreateNestedManyWithoutGuideInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -409,11 +409,11 @@ export type UserUncheckedCreateInput = {
   preferences?: Prisma.UserCreatepreferencesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  userBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  touristBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTouristInput
   guideBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutGuideInput
   reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuideInput
-  tours?: Prisma.TourUncheckedCreateNestedManyWithoutGuideInput
+  listings?: Prisma.ListingUncheckedCreateNestedManyWithoutGuideInput
 }
 
 export type UserUpdateInput = {
@@ -431,11 +431,11 @@ export type UserUpdateInput = {
   preferences?: Prisma.UserUpdatepreferencesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userBookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  touristBookings?: Prisma.BookingUpdateManyWithoutTouristNestedInput
   guideBookings?: Prisma.BookingUpdateManyWithoutGuideNestedInput
   reviewsGiven?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewsReceived?: Prisma.ReviewUpdateManyWithoutGuideNestedInput
-  tours?: Prisma.TourUpdateManyWithoutGuideNestedInput
+  listings?: Prisma.ListingUpdateManyWithoutGuideNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -453,11 +453,11 @@ export type UserUncheckedUpdateInput = {
   preferences?: Prisma.UserUpdatepreferencesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userBookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  touristBookings?: Prisma.BookingUncheckedUpdateManyWithoutTouristNestedInput
   guideBookings?: Prisma.BookingUncheckedUpdateManyWithoutGuideNestedInput
   reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutGuideNestedInput
-  tours?: Prisma.TourUncheckedUpdateManyWithoutGuideNestedInput
+  listings?: Prisma.ListingUncheckedUpdateManyWithoutGuideNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -589,6 +589,10 @@ export type UserCreatepreferencesInput = {
   set: string[]
 }
 
+export type StringFieldUpdateOperationsInput = {
+  set?: string
+}
+
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
@@ -628,23 +632,23 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type UserCreateNestedOneWithoutToursInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutToursInput, Prisma.UserUncheckedCreateWithoutToursInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutToursInput
+export type UserCreateNestedOneWithoutListingsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutListingsInput, Prisma.UserUncheckedCreateWithoutListingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutListingsInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutToursNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutToursInput, Prisma.UserUncheckedCreateWithoutToursInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutToursInput
-  upsert?: Prisma.UserUpsertWithoutToursInput
+export type UserUpdateOneRequiredWithoutListingsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutListingsInput, Prisma.UserUncheckedCreateWithoutListingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutListingsInput
+  upsert?: Prisma.UserUpsertWithoutListingsInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutToursInput, Prisma.UserUpdateWithoutToursInput>, Prisma.UserUncheckedUpdateWithoutToursInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutListingsInput, Prisma.UserUpdateWithoutListingsInput>, Prisma.UserUncheckedUpdateWithoutListingsInput>
 }
 
-export type UserCreateNestedOneWithoutUserBookingsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutUserBookingsInput, Prisma.UserUncheckedCreateWithoutUserBookingsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserBookingsInput
+export type UserCreateNestedOneWithoutTouristBookingsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTouristBookingsInput, Prisma.UserUncheckedCreateWithoutTouristBookingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTouristBookingsInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
@@ -654,12 +658,12 @@ export type UserCreateNestedOneWithoutGuideBookingsInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutUserBookingsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutUserBookingsInput, Prisma.UserUncheckedCreateWithoutUserBookingsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserBookingsInput
-  upsert?: Prisma.UserUpsertWithoutUserBookingsInput
+export type UserUpdateOneRequiredWithoutTouristBookingsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTouristBookingsInput, Prisma.UserUncheckedCreateWithoutTouristBookingsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTouristBookingsInput
+  upsert?: Prisma.UserUpsertWithoutTouristBookingsInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserBookingsInput, Prisma.UserUpdateWithoutUserBookingsInput>, Prisma.UserUncheckedUpdateWithoutUserBookingsInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTouristBookingsInput, Prisma.UserUpdateWithoutTouristBookingsInput>, Prisma.UserUncheckedUpdateWithoutTouristBookingsInput>
 }
 
 export type UserUpdateOneRequiredWithoutGuideBookingsNestedInput = {
@@ -698,7 +702,7 @@ export type UserUpdateOneRequiredWithoutReviewsReceivedNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewsReceivedInput, Prisma.UserUpdateWithoutReviewsReceivedInput>, Prisma.UserUncheckedUpdateWithoutReviewsReceivedInput>
 }
 
-export type UserCreateWithoutToursInput = {
+export type UserCreateWithoutListingsInput = {
   id?: string
   name: string
   email: string
@@ -713,13 +717,13 @@ export type UserCreateWithoutToursInput = {
   preferences?: Prisma.UserCreatepreferencesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  userBookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  touristBookings?: Prisma.BookingCreateNestedManyWithoutTouristInput
   guideBookings?: Prisma.BookingCreateNestedManyWithoutGuideInput
   reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewsReceived?: Prisma.ReviewCreateNestedManyWithoutGuideInput
 }
 
-export type UserUncheckedCreateWithoutToursInput = {
+export type UserUncheckedCreateWithoutListingsInput = {
   id?: string
   name: string
   email: string
@@ -734,29 +738,29 @@ export type UserUncheckedCreateWithoutToursInput = {
   preferences?: Prisma.UserCreatepreferencesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  userBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  touristBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTouristInput
   guideBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutGuideInput
   reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuideInput
 }
 
-export type UserCreateOrConnectWithoutToursInput = {
+export type UserCreateOrConnectWithoutListingsInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutToursInput, Prisma.UserUncheckedCreateWithoutToursInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutListingsInput, Prisma.UserUncheckedCreateWithoutListingsInput>
 }
 
-export type UserUpsertWithoutToursInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutToursInput, Prisma.UserUncheckedUpdateWithoutToursInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutToursInput, Prisma.UserUncheckedCreateWithoutToursInput>
+export type UserUpsertWithoutListingsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutListingsInput, Prisma.UserUncheckedUpdateWithoutListingsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutListingsInput, Prisma.UserUncheckedCreateWithoutListingsInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutToursInput = {
+export type UserUpdateToOneWithWhereWithoutListingsInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutToursInput, Prisma.UserUncheckedUpdateWithoutToursInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutListingsInput, Prisma.UserUncheckedUpdateWithoutListingsInput>
 }
 
-export type UserUpdateWithoutToursInput = {
+export type UserUpdateWithoutListingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -771,13 +775,13 @@ export type UserUpdateWithoutToursInput = {
   preferences?: Prisma.UserUpdatepreferencesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userBookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  touristBookings?: Prisma.BookingUpdateManyWithoutTouristNestedInput
   guideBookings?: Prisma.BookingUpdateManyWithoutGuideNestedInput
   reviewsGiven?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewsReceived?: Prisma.ReviewUpdateManyWithoutGuideNestedInput
 }
 
-export type UserUncheckedUpdateWithoutToursInput = {
+export type UserUncheckedUpdateWithoutListingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -792,13 +796,13 @@ export type UserUncheckedUpdateWithoutToursInput = {
   preferences?: Prisma.UserUpdatepreferencesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userBookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  touristBookings?: Prisma.BookingUncheckedUpdateManyWithoutTouristNestedInput
   guideBookings?: Prisma.BookingUncheckedUpdateManyWithoutGuideNestedInput
   reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutGuideNestedInput
 }
 
-export type UserCreateWithoutUserBookingsInput = {
+export type UserCreateWithoutTouristBookingsInput = {
   id?: string
   name: string
   email: string
@@ -816,10 +820,10 @@ export type UserCreateWithoutUserBookingsInput = {
   guideBookings?: Prisma.BookingCreateNestedManyWithoutGuideInput
   reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewsReceived?: Prisma.ReviewCreateNestedManyWithoutGuideInput
-  tours?: Prisma.TourCreateNestedManyWithoutGuideInput
+  listings?: Prisma.ListingCreateNestedManyWithoutGuideInput
 }
 
-export type UserUncheckedCreateWithoutUserBookingsInput = {
+export type UserUncheckedCreateWithoutTouristBookingsInput = {
   id?: string
   name: string
   email: string
@@ -837,12 +841,12 @@ export type UserUncheckedCreateWithoutUserBookingsInput = {
   guideBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutGuideInput
   reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuideInput
-  tours?: Prisma.TourUncheckedCreateNestedManyWithoutGuideInput
+  listings?: Prisma.ListingUncheckedCreateNestedManyWithoutGuideInput
 }
 
-export type UserCreateOrConnectWithoutUserBookingsInput = {
+export type UserCreateOrConnectWithoutTouristBookingsInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutUserBookingsInput, Prisma.UserUncheckedCreateWithoutUserBookingsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTouristBookingsInput, Prisma.UserUncheckedCreateWithoutTouristBookingsInput>
 }
 
 export type UserCreateWithoutGuideBookingsInput = {
@@ -860,10 +864,10 @@ export type UserCreateWithoutGuideBookingsInput = {
   preferences?: Prisma.UserCreatepreferencesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  userBookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  touristBookings?: Prisma.BookingCreateNestedManyWithoutTouristInput
   reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutUserInput
   reviewsReceived?: Prisma.ReviewCreateNestedManyWithoutGuideInput
-  tours?: Prisma.TourCreateNestedManyWithoutGuideInput
+  listings?: Prisma.ListingCreateNestedManyWithoutGuideInput
 }
 
 export type UserUncheckedCreateWithoutGuideBookingsInput = {
@@ -881,10 +885,10 @@ export type UserUncheckedCreateWithoutGuideBookingsInput = {
   preferences?: Prisma.UserCreatepreferencesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  userBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  touristBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTouristInput
   reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
   reviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuideInput
-  tours?: Prisma.TourUncheckedCreateNestedManyWithoutGuideInput
+  listings?: Prisma.ListingUncheckedCreateNestedManyWithoutGuideInput
 }
 
 export type UserCreateOrConnectWithoutGuideBookingsInput = {
@@ -892,18 +896,18 @@ export type UserCreateOrConnectWithoutGuideBookingsInput = {
   create: Prisma.XOR<Prisma.UserCreateWithoutGuideBookingsInput, Prisma.UserUncheckedCreateWithoutGuideBookingsInput>
 }
 
-export type UserUpsertWithoutUserBookingsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutUserBookingsInput, Prisma.UserUncheckedUpdateWithoutUserBookingsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutUserBookingsInput, Prisma.UserUncheckedCreateWithoutUserBookingsInput>
+export type UserUpsertWithoutTouristBookingsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTouristBookingsInput, Prisma.UserUncheckedUpdateWithoutTouristBookingsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTouristBookingsInput, Prisma.UserUncheckedCreateWithoutTouristBookingsInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutUserBookingsInput = {
+export type UserUpdateToOneWithWhereWithoutTouristBookingsInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutUserBookingsInput, Prisma.UserUncheckedUpdateWithoutUserBookingsInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTouristBookingsInput, Prisma.UserUncheckedUpdateWithoutTouristBookingsInput>
 }
 
-export type UserUpdateWithoutUserBookingsInput = {
+export type UserUpdateWithoutTouristBookingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -921,10 +925,10 @@ export type UserUpdateWithoutUserBookingsInput = {
   guideBookings?: Prisma.BookingUpdateManyWithoutGuideNestedInput
   reviewsGiven?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewsReceived?: Prisma.ReviewUpdateManyWithoutGuideNestedInput
-  tours?: Prisma.TourUpdateManyWithoutGuideNestedInput
+  listings?: Prisma.ListingUpdateManyWithoutGuideNestedInput
 }
 
-export type UserUncheckedUpdateWithoutUserBookingsInput = {
+export type UserUncheckedUpdateWithoutTouristBookingsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -942,7 +946,7 @@ export type UserUncheckedUpdateWithoutUserBookingsInput = {
   guideBookings?: Prisma.BookingUncheckedUpdateManyWithoutGuideNestedInput
   reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutGuideNestedInput
-  tours?: Prisma.TourUncheckedUpdateManyWithoutGuideNestedInput
+  listings?: Prisma.ListingUncheckedUpdateManyWithoutGuideNestedInput
 }
 
 export type UserUpsertWithoutGuideBookingsInput = {
@@ -971,10 +975,10 @@ export type UserUpdateWithoutGuideBookingsInput = {
   preferences?: Prisma.UserUpdatepreferencesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userBookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  touristBookings?: Prisma.BookingUpdateManyWithoutTouristNestedInput
   reviewsGiven?: Prisma.ReviewUpdateManyWithoutUserNestedInput
   reviewsReceived?: Prisma.ReviewUpdateManyWithoutGuideNestedInput
-  tours?: Prisma.TourUpdateManyWithoutGuideNestedInput
+  listings?: Prisma.ListingUpdateManyWithoutGuideNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGuideBookingsInput = {
@@ -992,10 +996,10 @@ export type UserUncheckedUpdateWithoutGuideBookingsInput = {
   preferences?: Prisma.UserUpdatepreferencesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userBookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  touristBookings?: Prisma.BookingUncheckedUpdateManyWithoutTouristNestedInput
   reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
   reviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutGuideNestedInput
-  tours?: Prisma.TourUncheckedUpdateManyWithoutGuideNestedInput
+  listings?: Prisma.ListingUncheckedUpdateManyWithoutGuideNestedInput
 }
 
 export type UserCreateWithoutReviewsGivenInput = {
@@ -1013,10 +1017,10 @@ export type UserCreateWithoutReviewsGivenInput = {
   preferences?: Prisma.UserCreatepreferencesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  userBookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  touristBookings?: Prisma.BookingCreateNestedManyWithoutTouristInput
   guideBookings?: Prisma.BookingCreateNestedManyWithoutGuideInput
   reviewsReceived?: Prisma.ReviewCreateNestedManyWithoutGuideInput
-  tours?: Prisma.TourCreateNestedManyWithoutGuideInput
+  listings?: Prisma.ListingCreateNestedManyWithoutGuideInput
 }
 
 export type UserUncheckedCreateWithoutReviewsGivenInput = {
@@ -1034,10 +1038,10 @@ export type UserUncheckedCreateWithoutReviewsGivenInput = {
   preferences?: Prisma.UserCreatepreferencesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  userBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  touristBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTouristInput
   guideBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutGuideInput
   reviewsReceived?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuideInput
-  tours?: Prisma.TourUncheckedCreateNestedManyWithoutGuideInput
+  listings?: Prisma.ListingUncheckedCreateNestedManyWithoutGuideInput
 }
 
 export type UserCreateOrConnectWithoutReviewsGivenInput = {
@@ -1060,10 +1064,10 @@ export type UserCreateWithoutReviewsReceivedInput = {
   preferences?: Prisma.UserCreatepreferencesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  userBookings?: Prisma.BookingCreateNestedManyWithoutUserInput
+  touristBookings?: Prisma.BookingCreateNestedManyWithoutTouristInput
   guideBookings?: Prisma.BookingCreateNestedManyWithoutGuideInput
   reviewsGiven?: Prisma.ReviewCreateNestedManyWithoutUserInput
-  tours?: Prisma.TourCreateNestedManyWithoutGuideInput
+  listings?: Prisma.ListingCreateNestedManyWithoutGuideInput
 }
 
 export type UserUncheckedCreateWithoutReviewsReceivedInput = {
@@ -1081,10 +1085,10 @@ export type UserUncheckedCreateWithoutReviewsReceivedInput = {
   preferences?: Prisma.UserCreatepreferencesInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
-  userBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutUserInput
+  touristBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutTouristInput
   guideBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutGuideInput
   reviewsGiven?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
-  tours?: Prisma.TourUncheckedCreateNestedManyWithoutGuideInput
+  listings?: Prisma.ListingUncheckedCreateNestedManyWithoutGuideInput
 }
 
 export type UserCreateOrConnectWithoutReviewsReceivedInput = {
@@ -1118,10 +1122,10 @@ export type UserUpdateWithoutReviewsGivenInput = {
   preferences?: Prisma.UserUpdatepreferencesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userBookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  touristBookings?: Prisma.BookingUpdateManyWithoutTouristNestedInput
   guideBookings?: Prisma.BookingUpdateManyWithoutGuideNestedInput
   reviewsReceived?: Prisma.ReviewUpdateManyWithoutGuideNestedInput
-  tours?: Prisma.TourUpdateManyWithoutGuideNestedInput
+  listings?: Prisma.ListingUpdateManyWithoutGuideNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsGivenInput = {
@@ -1139,10 +1143,10 @@ export type UserUncheckedUpdateWithoutReviewsGivenInput = {
   preferences?: Prisma.UserUpdatepreferencesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userBookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  touristBookings?: Prisma.BookingUncheckedUpdateManyWithoutTouristNestedInput
   guideBookings?: Prisma.BookingUncheckedUpdateManyWithoutGuideNestedInput
   reviewsReceived?: Prisma.ReviewUncheckedUpdateManyWithoutGuideNestedInput
-  tours?: Prisma.TourUncheckedUpdateManyWithoutGuideNestedInput
+  listings?: Prisma.ListingUncheckedUpdateManyWithoutGuideNestedInput
 }
 
 export type UserUpsertWithoutReviewsReceivedInput = {
@@ -1171,10 +1175,10 @@ export type UserUpdateWithoutReviewsReceivedInput = {
   preferences?: Prisma.UserUpdatepreferencesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userBookings?: Prisma.BookingUpdateManyWithoutUserNestedInput
+  touristBookings?: Prisma.BookingUpdateManyWithoutTouristNestedInput
   guideBookings?: Prisma.BookingUpdateManyWithoutGuideNestedInput
   reviewsGiven?: Prisma.ReviewUpdateManyWithoutUserNestedInput
-  tours?: Prisma.TourUpdateManyWithoutGuideNestedInput
+  listings?: Prisma.ListingUpdateManyWithoutGuideNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
@@ -1192,10 +1196,10 @@ export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
   preferences?: Prisma.UserUpdatepreferencesInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userBookings?: Prisma.BookingUncheckedUpdateManyWithoutUserNestedInput
+  touristBookings?: Prisma.BookingUncheckedUpdateManyWithoutTouristNestedInput
   guideBookings?: Prisma.BookingUncheckedUpdateManyWithoutGuideNestedInput
   reviewsGiven?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
-  tours?: Prisma.TourUncheckedUpdateManyWithoutGuideNestedInput
+  listings?: Prisma.ListingUncheckedUpdateManyWithoutGuideNestedInput
 }
 
 
@@ -1204,19 +1208,19 @@ export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
  */
 
 export type UserCountOutputType = {
-  userBookings: number
+  touristBookings: number
   guideBookings: number
   reviewsGiven: number
   reviewsReceived: number
-  tours: number
+  listings: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  userBookings?: boolean | UserCountOutputTypeCountUserBookingsArgs
+  touristBookings?: boolean | UserCountOutputTypeCountTouristBookingsArgs
   guideBookings?: boolean | UserCountOutputTypeCountGuideBookingsArgs
   reviewsGiven?: boolean | UserCountOutputTypeCountReviewsGivenArgs
   reviewsReceived?: boolean | UserCountOutputTypeCountReviewsReceivedArgs
-  tours?: boolean | UserCountOutputTypeCountToursArgs
+  listings?: boolean | UserCountOutputTypeCountListingsArgs
 }
 
 /**
@@ -1232,7 +1236,7 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountUserBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type UserCountOutputTypeCountTouristBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.BookingWhereInput
 }
 
@@ -1260,8 +1264,8 @@ export type UserCountOutputTypeCountReviewsReceivedArgs<ExtArgs extends runtime.
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountToursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.TourWhereInput
+export type UserCountOutputTypeCountListingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ListingWhereInput
 }
 
 
@@ -1280,11 +1284,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   preferences?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  userBookings?: boolean | Prisma.User$userBookingsArgs<ExtArgs>
+  touristBookings?: boolean | Prisma.User$touristBookingsArgs<ExtArgs>
   guideBookings?: boolean | Prisma.User$guideBookingsArgs<ExtArgs>
   reviewsGiven?: boolean | Prisma.User$reviewsGivenArgs<ExtArgs>
   reviewsReceived?: boolean | Prisma.User$reviewsReceivedArgs<ExtArgs>
-  tours?: boolean | Prisma.User$toursArgs<ExtArgs>
+  listings?: boolean | Prisma.User$listingsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1341,11 +1345,11 @@ export type UserSelectScalar = {
 
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "profilePic" | "role" | "bio" | "languages" | "expertise" | "dailyRate" | "isVerified" | "preferences" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  userBookings?: boolean | Prisma.User$userBookingsArgs<ExtArgs>
+  touristBookings?: boolean | Prisma.User$touristBookingsArgs<ExtArgs>
   guideBookings?: boolean | Prisma.User$guideBookingsArgs<ExtArgs>
   reviewsGiven?: boolean | Prisma.User$reviewsGivenArgs<ExtArgs>
   reviewsReceived?: boolean | Prisma.User$reviewsReceivedArgs<ExtArgs>
-  tours?: boolean | Prisma.User$toursArgs<ExtArgs>
+  listings?: boolean | Prisma.User$listingsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1354,11 +1358,11 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    userBookings: Prisma.$BookingPayload<ExtArgs>[]
+    touristBookings: Prisma.$BookingPayload<ExtArgs>[]
     guideBookings: Prisma.$BookingPayload<ExtArgs>[]
     reviewsGiven: Prisma.$ReviewPayload<ExtArgs>[]
     reviewsReceived: Prisma.$ReviewPayload<ExtArgs>[]
-    tours: Prisma.$TourPayload<ExtArgs>[]
+    listings: Prisma.$ListingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1769,11 +1773,11 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  userBookings<T extends Prisma.User$userBookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userBookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  touristBookings<T extends Prisma.User$touristBookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$touristBookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   guideBookings<T extends Prisma.User$guideBookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$guideBookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewsGiven<T extends Prisma.User$reviewsGivenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsGivenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewsReceived<T extends Prisma.User$reviewsReceivedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  tours<T extends Prisma.User$toursArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$toursArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TourPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  listings<T extends Prisma.User$listingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$listingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ListingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2205,9 +2209,9 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.userBookings
+ * User.touristBookings
  */
-export type User$userBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$touristBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Booking
    */
@@ -2301,27 +2305,27 @@ export type User$reviewsReceivedArgs<ExtArgs extends runtime.Types.Extensions.In
 }
 
 /**
- * User.tours
+ * User.listings
  */
-export type User$toursArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$listingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Tour
+   * Select specific fields to fetch from the Listing
    */
-  select?: Prisma.TourSelect<ExtArgs> | null
+  select?: Prisma.ListingSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Tour
+   * Omit specific fields from the Listing
    */
-  omit?: Prisma.TourOmit<ExtArgs> | null
+  omit?: Prisma.ListingOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.TourInclude<ExtArgs> | null
-  where?: Prisma.TourWhereInput
-  orderBy?: Prisma.TourOrderByWithRelationInput | Prisma.TourOrderByWithRelationInput[]
-  cursor?: Prisma.TourWhereUniqueInput
+  include?: Prisma.ListingInclude<ExtArgs> | null
+  where?: Prisma.ListingWhereInput
+  orderBy?: Prisma.ListingOrderByWithRelationInput | Prisma.ListingOrderByWithRelationInput[]
+  cursor?: Prisma.ListingWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.TourScalarFieldEnum | Prisma.TourScalarFieldEnum[]
+  distinct?: Prisma.ListingScalarFieldEnum | Prisma.ListingScalarFieldEnum[]
 }
 
 /**
