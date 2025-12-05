@@ -115,13 +115,21 @@ model Review {
   createdAt DateTime @default(now())
 }
 
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
 model Payment {
-  id            String   @id @default(uuid())
+  id            String        @id @default(uuid())
   amount        Float
-  transactionId String
-  status        String
-  createdAt     DateTime @default(now())
+  transactionId String        @unique
+  status        PaymentStatus @default(PENDING)
 
   bookingId String
   booking   Booking @relation(fields: [bookingId], references: [id])
+
+  createdAt DateTime @default(now())
 }
