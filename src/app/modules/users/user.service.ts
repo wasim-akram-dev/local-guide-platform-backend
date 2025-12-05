@@ -1,7 +1,15 @@
 import prisma from "../../shared/prisma";
 
 const getUserById = async (id: string) => {
-  const user = await prisma.user.findUnique({ where: { id } });
+  const user = await prisma.user.findUnique({
+    where: { id },
+    include: {
+      listings: true, // Show guides tours
+      // reviews: true,    // Show reviews given/received
+      reviewsGiven: true,
+      reviewsReceived: true,
+    },
+  });
   return user;
 };
 
