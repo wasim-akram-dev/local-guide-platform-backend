@@ -3,23 +3,16 @@ import authGuard from "../../middlewares/authGuard";
 import {
   createReviewController,
   getGuideReviews,
-  getTourReviews,
+  getListingReviews,
 } from "./review.controller";
 
 const router = Router();
 
+// Only TOURIST can create review & only after booking completed
 router.post("/", authGuard("TOURIST"), createReviewController);
+
+// Public — anyone can view reviews
 router.get("/guide/:guideId", getGuideReviews);
-router.get("/tour/:tourId", getTourReviews);
+router.get("/listing/:listingId", getListingReviews);
 
-export const ReviewsRoutes = router;
-
-// await fetch("/api/reviews", {
-//   method: "POST",
-//   body: JSON.stringify({
-//     tourId,
-//     guideId,
-//     rating: 5,
-//     comment: "Amazing guide, very friendly!",
-//   }),
-// });
+export const ReviewRoutes = router;

@@ -94,22 +94,23 @@ model Booking {
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   payments       Payment[]
+  reviews        Review[]
 }
 
 model Review {
-  id String @id @default(uuid())
-
-  userId    String // reviewer (tourist)
-  guideId   String // guide being reviewed
-  tourId    String // tour that was taken
-  listingId String
-
-  rating  Int // 1–5
+  id      String  @id @default(uuid())
+  rating  Int
   comment String?
+
+  userId    String // tourist who left review
+  guideId   String // guide being reviewed
+  listingId String // listing reviewed
+  bookingId String // proof of completed booking
 
   user    User    @relation("ReviewUser", fields: [userId], references: [id])
   guide   User    @relation("ReviewGuide", fields: [guideId], references: [id])
   listing Listing @relation(fields: [listingId], references: [id])
+  booking Booking @relation(fields: [bookingId], references: [id])
 
   createdAt DateTime @default(now())
 }

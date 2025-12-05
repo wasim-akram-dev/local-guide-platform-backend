@@ -1,31 +1,65 @@
+import ApiError from "../../errors/ApiError";
 import prisma from "../../shared/prisma";
 
 export const reviewService = {
   createReview: async (payload: any, userId: string) => {
-    // Check if booking is completed? (you can enforce stronger rule later)
+    const { bookingId, guideId, rating, comment } = payload;
+
+    // 1. Check if booking exists and is completed
     const booking = await prisma.booking.findFirst({
-      where: { tourId: payload.tourId, userId, status: "COMPLETED" },
+      where: {
+        id: bookingId,
+        touristId: userId, // Only review own booking
+        status: "COMPLETED",
+      },
     });
 
-    if (!booking)
-      throw new Error("You can only review after completing a tour.");
+    if (!booking) {
+      throw new ApiError(400, "Review is only allowed after completed booking");
+    }
 
-    return prisma.review.create({
-      data: { ...payload, userId },
+    // 2. Prevent duplicate review for same booking
+    const existingReview = await prisma.review.findFirst({
+      where: { bookingId, userId },
     });
+
+    if (existingReview) {
+      throw new ApiError(400, "You have already reviewed this booking");
+    }
+
+    // 3. Create review linked with listing & guide
+    const review = await prisma.review.create({
+      data: {
+        rating,
+        comment,
+        userId,
+        guideId,
+        listingId: booking.listingId,
+        bookingId: booking.id,
+      },
+    });
+
+    return review;
   },
 
   getReviewsForGuide: async (guideId: string) => {
     return prisma.review.findMany({
       where: { guideId },
-      include: { user: true },
+      include: {
+        user: { select: { id: true, name: true, profilePic: true } },
+        listing: true,
+      },
+      orderBy: { createdAt: "desc" },
     });
   },
 
-  getReviewsForTour: async (tourId: string) => {
+  getReviewsForListing: async (listingId: string) => {
     return prisma.review.findMany({
-      where: { tourId },
-      include: { user: true },
+      where: { listingId },
+      include: {
+        user: { select: { id: true, name: true, profilePic: true } },
+      },
+      orderBy: { createdAt: "desc" },
     });
   },
 };

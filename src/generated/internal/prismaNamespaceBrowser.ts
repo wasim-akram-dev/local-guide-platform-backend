@@ -131,12 +131,12 @@ export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeo
 
 export const ReviewScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  guideId: 'guideId',
-  tourId: 'tourId',
-  listingId: 'listingId',
   rating: 'rating',
   comment: 'comment',
+  userId: 'userId',
+  guideId: 'guideId',
+  listingId: 'listingId',
+  bookingId: 'bookingId',
   createdAt: 'createdAt'
 } as const
 
