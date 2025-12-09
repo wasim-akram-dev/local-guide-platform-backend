@@ -1,20 +1,73 @@
 import prisma from "../../shared/prisma";
 
 const createListing = async (guideId: string, payload: any) => {
-  const listing = await prisma.listing.create({
+  return prisma.listing.create({
     data: { ...payload, guideId },
+    include: {
+      guide: {
+        select: { id: true, name: true, email: true, profilePic: true },
+      },
+    },
   });
-  return listing;
 };
 
-const getListings = async () => {
-  return await prisma.listing.findMany({ include: { guide: true } });
+const getListings = async (query: any) => {
+  const { category, city, priceMin, priceMax, duration, search, guideId } =
+    query;
+
+  const filters: any = { active: true };
+
+  if (guideId) filters.guideId = guideId;
+
+  if (category) filters.category = category;
+  if (city) filters.city = city;
+  if (duration) filters.duration = Number(duration);
+  if (priceMin || priceMax)
+    filters.tourFee = {
+      ...(priceMin && { gte: Number(priceMin) }),
+      ...(priceMax && { lte: Number(priceMax) }),
+    };
+  if (search) filters.title = { contains: search, mode: "insensitive" };
+
+  return prisma.listing.findMany({
+    where: filters,
+    include: { guide: true, reviews: true },
+    orderBy: { createdAt: "desc" },
+  });
 };
 
 const getListingById = async (id: string) => {
   return await prisma.listing.findUnique({
     where: { id },
-    include: { guide: true, bookings: true },
+    include: {
+      guide: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          profilePic: true,
+          bio: true,
+          languages: true,
+          expertise: true,
+          // phone: true,
+          // add more if needed
+        },
+      },
+      bookings: {
+        select: {
+          id: true,
+          date: true,
+          status: true, // Pending/Approved/etc.
+        },
+      },
+      reviews: {
+        include: {
+          user: {
+            select: { id: true, name: true, profilePic: true },
+          },
+        },
+      },
+    },
   });
 };
 

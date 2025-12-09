@@ -14,8 +14,8 @@ const createListing = catchAsync(async (req: any, res: Response) => {
   });
 });
 
-const getListings = catchAsync(async (_req: Request, res: Response) => {
-  const result = await ListingsService.getListings();
+const getListings = catchAsync(async (req, res) => {
+  const result = await ListingsService.getListings(req.query);
   sendResponse(res, {
     statusCode: 200,
     success: true,

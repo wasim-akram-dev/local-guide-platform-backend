@@ -31,7 +31,8 @@ const register = async (payload: RegisterPayload) => {
       name: name,
       email: email,
       password: hashed,
-      role: role === "GUIDE" ? "GUIDE" : "TOURIST",
+      // role: role === "GUIDE" ? "GUIDE" : "TOURIST",
+      role: role,
       bio: bio,
       languages: languages ?? [],
       expertise: expertise ?? [],
@@ -73,13 +74,13 @@ const login = async (payload: LoginPayload) => {
   }
 
   const accessToken = jwtHelper.generateToken(
-    { id: user.id, email: user.email, role: user.role },
+    { id: user.id, name: user.name, email: user.email, role: user.role },
     config.jwt.access_secret,
     config.jwt.access_expires
   );
 
   const refreshToken = jwtHelper.generateToken(
-    { id: user.id, email: user.email, role: user.role },
+    { id: user.id, name: user.name, email: user.email, role: user.role },
     config.jwt.refresh_secret,
     config.jwt.refresh_expires
   );

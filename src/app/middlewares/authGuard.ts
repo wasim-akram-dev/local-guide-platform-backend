@@ -16,7 +16,9 @@ const authGuard = (...roles: ("TOURIST" | "GUIDE" | "ADMIN")[]) => {
     try {
       // 1️⃣ Get token from cookies or Authorization header
       const token =
-        req.cookies?.accessToken || req.headers.authorization?.split(" ")[1];
+        req.cookies?.accessToken ||
+        req.headers.authorization?.split(" ")[1] ||
+        req.headers.authorization;
 
       if (!token) {
         throw new ApiError(httpStatus.UNAUTHORIZED, "No token provided");

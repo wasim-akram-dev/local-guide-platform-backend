@@ -26,22 +26,42 @@ export const createListingSchema = z.object({
     .trim()
     .min(5, "Itinerary must be minimum 5 characters"),
 
+  // tourFee: z
+  //   .number({ error: "Tour fee must be a number" })
+  //   .positive("Tour fee must be greater than 0"),
+
+  //   tourFee: z
+  // .union([z.number(), z.string()])
+  // .transform((val) => Number(val))
+  // .refine((num) => num > 0, "Tour fee must be greater than 0"),
+
   tourFee: z
-    .number({ error: "Tour fee must be a number" })
-    .positive("Tour fee must be greater than 0"),
+    .union([z.number(), z.string()])
+    .transform((val) => Number(val))
+    .refine((num) => num > 0, { message: "Tour fee must be greater than 0" }),
+
+  // duration: z
+  //   .number({ error: "Duration must be a number" })
+  //   .min(1, "Duration must be at least 1 day/hour"),
 
   duration: z
-    .number({ error: "Duration must be a number" })
-    .min(1, "Duration must be at least 1 day/hour"),
+    .union([z.number(), z.string()])
+    .transform((val) => Number(val))
+    .refine((num) => num >= 1, { message: "Duration must be at least 1" }),
 
   meetingPoint: z
     .string({ error: "Meeting point is required" })
     .trim()
     .min(3, "Meeting point must be at least 3 characters"),
 
+  // maxGroupSize: z
+  //   .number({ error: "Max group size must be a number" })
+  //   .min(1, "Group size must be at least 1"),
+
   maxGroupSize: z
-    .number({ error: "Max group size must be a number" })
-    .min(1, "Group size must be at least 1"),
+    .union([z.number(), z.string()])
+    .transform((val) => Number(val))
+    .refine((num) => num >= 1, { message: "Group size must be at least 1" }),
 
   images: z.array(z.string().url("Image must be a valid URL")).default([]),
 
