@@ -3,7 +3,6 @@ import app from "./app";
 import config from "./config";
 
 async function bootstrap() {
-  // This variable will hold our server instance
   let server: Server;
 
   try {
@@ -12,36 +11,48 @@ async function bootstrap() {
       console.log(`🚀 Server is running on http://localhost:${config.port}`);
     });
 
-    // Function to gracefully shut down the server
+    // Graceful shutdown handler
     const exitHandler = () => {
       if (server) {
+        console.log("⚠️  Server shutting down...");
         server.close(() => {
-          console.log("Server closed gracefully.");
-          process.exit(1); // Exit with a failure code
+          console.log("🛑 Server closed gracefully.");
+          process.exit(1);
         });
       } else {
         process.exit(1);
       }
     };
 
-    // Handle unhandled promise rejections
-    process.on("unhandledRejection", (error) => {
-      console.log(
-        "Unhandled Rejection is detected, we are closing our server..."
-      );
-      if (server) {
-        server.close(() => {
-          console.log(error);
-          process.exit(1);
-        });
-      } else {
-        process.exit(1);
-      }
+    // Unexpected errors
+    process.on("unhandledRejection", (reason) => {
+      console.error("💥 Unhandled Rejection detected. Shutting down...");
+      console.error(reason);
+      exitHandler();
+    });
+
+    process.on("uncaughtException", (err) => {
+      console.error("💥 Uncaught Exception detected. Shutting down...");
+      console.error(err);
+      exitHandler();
+    });
+
+    // OS Signals (for manual stop or Docker stop)
+    process.on("SIGTERM", () => {
+      console.log("📌 SIGTERM received.");
+      exitHandler();
+    });
+
+    process.on("SIGINT", () => {
+      console.log("📌 SIGINT (Ctrl+C) received.");
+      exitHandler();
     });
   } catch (error) {
-    console.error("Error during server startup:", error);
+    console.error("🚨 Error during server startup:", error);
     process.exit(1);
   }
 }
 
-bootstrap();
+(async () => {
+  await bootstrap();
+})();
