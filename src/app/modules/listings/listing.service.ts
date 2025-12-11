@@ -1,6 +1,7 @@
 import prisma from "../../shared/prisma";
 
 const createListing = async (guideId: string, payload: any) => {
+  console.log(guideId, payload);
   return prisma.listing.create({
     data: { ...payload, guideId },
     include: {
@@ -20,7 +21,7 @@ const getListings = async (query: any) => {
   if (guideId) filters.guideId = guideId;
 
   if (category) filters.category = category;
-  if (city) filters.city = city;
+  if (city) filters.city = { contains: city, mode: "insensitive" };
   if (duration) filters.duration = Number(duration);
   if (priceMin || priceMax)
     filters.tourFee = {
@@ -72,6 +73,7 @@ const getListingById = async (id: string) => {
 };
 
 const updateListing = async (id: string, guideId: string, payload: any) => {
+  console.log(id, guideId, payload);
   const listing = await prisma.listing.findUnique({ where: { id } });
   if (!listing) throw new Error("Listing not found");
   if (listing.guideId !== guideId) throw new Error("Unauthorized");

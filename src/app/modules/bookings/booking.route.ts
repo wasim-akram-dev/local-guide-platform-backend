@@ -35,17 +35,17 @@ router.get(
 // - Guides accept/reject -> roleGuard("GUIDE")
 // - Tourists cancel -> roleGuard("TOURIST")
 // - Admin can update -> roleGuard("ADMIN") or full access in controller
-// router.patch(
-//   "/:id/status",
-//   authGuard("TOURIST", "GUIDE", "ADMIN"),
-//   validateRequest(updateBookingStatusSchema),
-//   BookingsController.updateStatus
-// );
 router.patch(
   "/:id/status",
+  authGuard("TOURIST", "GUIDE", "ADMIN"),
   validateRequest(updateBookingStatusSchema),
   BookingsController.updateStatus
 );
+// router.patch(
+//   "/:id/status",
+//   validateRequest(updateBookingStatusSchema),
+//   BookingsController.updateStatus
+// );
 
 // Tourist cancels booking
 // router.patch(
