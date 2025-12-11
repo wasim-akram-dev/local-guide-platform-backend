@@ -39,15 +39,16 @@ const getBooking = catchAsync(async (req: any, res: Response) => {
   });
 });
 
-const getMyBookings = catchAsync(async (req: any, res: Response) => {
+const getAllBookings = catchAsync(async (req: any, res: Response) => {
   const user = req.user;
   let data;
+
   if (user.role === "TOURIST") {
     data = await BookingsService.getBookingsForTourist(user.id);
   } else if (user.role === "GUIDE") {
     data = await BookingsService.getBookingsForGuide(user.id);
   } else if (user.role === "ADMIN") {
-    data = await BookingsService.getAllBookings();
+    data = await BookingsService.getAllBookings(req.query); // admin can pass filters
   } else {
     throw new ApiError(403, "Forbidden");
   }
@@ -57,6 +58,22 @@ const getMyBookings = catchAsync(async (req: any, res: Response) => {
     success: true,
     message: "Bookings fetched",
     data,
+  });
+});
+
+const cancelBooking = catchAsync(async (req: any, res: Response) => {
+  const user = req.user;
+  const result = await BookingsService.cancelBooking(
+    req.params.id,
+    user.id,
+    user.role
+  );
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Booking cancelled",
+    data: result,
   });
 });
 
@@ -82,6 +99,7 @@ const updateStatus = catchAsync(async (req: any, res: Response) => {
 export const BookingsController = {
   createBooking,
   getBooking,
-  getMyBookings,
   updateStatus,
+  getAllBookings,
+  cancelBooking,
 };

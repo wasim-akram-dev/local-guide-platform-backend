@@ -29,12 +29,16 @@ router.get("/:id", ListingsController.getListingById);
 // Only guide who created the tour can update/delete
 router.patch(
   "/:id",
-  authGuard("GUIDE"),
+  authGuard("ADMIN", "GUIDE"),
   validateRequest(updateListingSchema),
   ListingsController.updateListing
 );
 
 // DELETE	/api/listings/:id	Deactivate listing
-router.delete("/:id", authGuard("GUIDE"), ListingsController.deleteListing);
+router.delete(
+  "/:id",
+  authGuard("ADMIN", "GUIDE"),
+  ListingsController.deleteListing
+);
 
 export const ListingsRoutes = router;

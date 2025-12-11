@@ -2,30 +2,22 @@ import { BookingStatus } from "../../../generated/enums";
 import ApiError from "../../errors/ApiError";
 import prisma from "../../shared/prisma";
 
-/**
- * totalPrice = listing.tourFee * numberOfPeople
- * Assumes listing.tourFee is price per person.
- */
-
 type CreatePayload = {
   listingId: string;
-  date: string; // ISO string
+  date: string;
   numberOfPeople: number;
 };
 
 const createBooking = async (touristId: string, payload: CreatePayload) => {
-  // Ensure listing exists
   const listing = await prisma.listing.findUnique({
     where: { id: payload.listingId },
   });
   if (!listing) throw new ApiError(404, "Listing not found");
 
-  // Prevent booking in the past
   const dateObj = new Date(payload.date);
   if (isNaN(dateObj.getTime())) throw new ApiError(400, "Invalid date");
   if (dateObj < new Date()) throw new ApiError(400, "Cannot book a past date");
 
-  // calculate total price
   const totalPrice = listing.tourFee * payload.numberOfPeople;
 
   const booking = await prisma.booking.create({
@@ -37,6 +29,7 @@ const createBooking = async (touristId: string, payload: CreatePayload) => {
       numberOfPeople: payload.numberOfPeople,
       totalPrice,
       status: "PENDING",
+      active: true, // for soft delete
     },
   });
 
@@ -54,7 +47,7 @@ const getBookingById = async (id: string) => {
 
 const getBookingsForTourist = async (touristId: string) => {
   return await prisma.booking.findMany({
-    where: { touristId },
+    where: { touristId, active: true },
     include: { listing: true, guide: true },
     orderBy: { date: "desc" },
   });
@@ -62,16 +55,43 @@ const getBookingsForTourist = async (touristId: string) => {
 
 const getBookingsForGuide = async (guideId: string) => {
   return await prisma.booking.findMany({
-    where: { guideId },
+    where: { guideId, active: true },
     include: { listing: true, tourist: true },
     orderBy: { date: "desc" },
   });
 };
 
-const getAllBookings = async () => {
-  return await prisma.booking.findMany({
+// Admin enhanced version: filtering, pagination, sorting
+const getAllBookings = async (query?: any) => {
+  const {
+    status,
+    guideId,
+    touristId,
+    fromDate,
+    toDate,
+    page = 1,
+    limit = 10,
+    sortBy = "createdAt",
+    sortOrder = "desc",
+  } = query || {};
+
+  const filters: any = { active: true };
+  if (status) filters.status = status;
+  if (guideId) filters.guideId = guideId;
+  if (touristId) filters.touristId = touristId;
+  if (fromDate || toDate) filters.date = {};
+  if (fromDate) filters.date.gte = new Date(fromDate);
+  if (toDate) filters.date.lte = new Date(toDate);
+
+  const skip = (Number(page) - 1) * Number(limit);
+  const take = Number(limit);
+
+  return prisma.booking.findMany({
+    where: filters,
     include: { listing: true, tourist: true, guide: true },
-    orderBy: { createdAt: "desc" },
+    orderBy: { [sortBy]: sortOrder },
+    skip,
+    take,
   });
 };
 
@@ -84,20 +104,13 @@ const updateBookingStatus = async (
   const booking = await prisma.booking.findUnique({ where: { id: bookingId } });
   if (!booking) throw new ApiError(404, "Booking not found");
 
-  // Only guide for that listing or admin can accept/reject/complete;
-  // tourist can cancel their own bookings.
   if (userRole === "GUIDE") {
     if (booking.guideId !== userId) throw new ApiError(403, "Forbidden");
-    // allowed transitions for guides: PENDING -> ACCEPTED/REJECTED, ACCEPTED -> COMPLETED
-    // (you can refine transitions as needed)
   } else if (userRole === "TOURIST") {
     if (booking.touristId !== userId) throw new ApiError(403, "Forbidden");
-    // tourists can only cancel their own booking
     if (newStatus !== "CANCELLED")
       throw new ApiError(403, "Tourists can only cancel bookings");
-  } else if (userRole === "ADMIN") {
-    // admin allowed
-  } else {
+  } else if (userRole !== "ADMIN") {
     throw new ApiError(403, "Forbidden");
   }
 
@@ -109,6 +122,28 @@ const updateBookingStatus = async (
   return updated;
 };
 
+// Soft delete / cancel booking (Admin or Tourist)
+const cancelBooking = async (
+  bookingId: string,
+  userId: string,
+  userRole: string
+) => {
+  const booking = await prisma.booking.findUnique({ where: { id: bookingId } });
+  if (!booking) throw new ApiError(404, "Booking not found");
+
+  if (
+    (userRole === "TOURIST" && booking.touristId !== userId) ||
+    userRole === "GUIDE"
+  ) {
+    throw new ApiError(403, "Forbidden");
+  }
+
+  return prisma.booking.update({
+    where: { id: bookingId },
+    data: { status: "CANCELLED", active: false },
+  });
+};
+
 export const BookingsService = {
   createBooking,
   getBookingById,
@@ -116,4 +151,5 @@ export const BookingsService = {
   getBookingsForGuide,
   getAllBookings,
   updateBookingStatus,
+  cancelBooking,
 };

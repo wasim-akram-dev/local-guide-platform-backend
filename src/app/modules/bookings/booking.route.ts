@@ -1,5 +1,4 @@
 import express from "express";
-
 import authGuard from "../../middlewares/authGuard";
 import validateRequest from "../../middlewares/validateRequest";
 import { BookingsController } from "./booking.controller";
@@ -19,15 +18,17 @@ router.post(
 );
 
 // Get a booking (tourist/guide/admin — controller enforces security)
-// router.get("/:id",authGuard("TOURIST", "GUIDE", "ADMIN"), BookingsController.getBooking);
-router.get("/:id", BookingsController.getBooking);
+router.get(
+  "/:id",
+  authGuard("TOURIST", "GUIDE", "ADMIN"),
+  BookingsController.getBooking
+);
 
-// Get my bookings (role-aware)
-// All users can see their bookings (admin sees all)
+// GET all bookings with filters / pagination
 router.get(
   "/",
   authGuard("TOURIST", "GUIDE", "ADMIN"),
-  BookingsController.getMyBookings
+  BookingsController.getAllBookings
 );
 
 // Guide approves or rejects
@@ -41,17 +42,12 @@ router.patch(
   validateRequest(updateBookingStatusSchema),
   BookingsController.updateStatus
 );
-// router.patch(
-//   "/:id/status",
-//   validateRequest(updateBookingStatusSchema),
-//   BookingsController.updateStatus
-// );
 
-// Tourist cancels booking
-// router.patch(
-//   "/cancel/:id",
-//   authGuard("TOURIST"),
-//   BookingsController.cancelBooking
-// );
+// Cancel booking (soft delete)
+router.patch(
+  "/:id/cancel",
+  authGuard("TOURIST", "ADMIN"),
+  BookingsController.cancelBooking
+);
 
 export const BookingsRoutes = router;

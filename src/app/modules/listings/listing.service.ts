@@ -76,7 +76,7 @@ const updateListing = async (id: string, guideId: string, payload: any) => {
   console.log(id, guideId, payload);
   const listing = await prisma.listing.findUnique({ where: { id } });
   if (!listing) throw new Error("Listing not found");
-  if (listing.guideId !== guideId) throw new Error("Unauthorized");
+  // if (listing.guideId !== guideId) throw new Error("Unauthorized");
 
   return await prisma.listing.update({
     where: { id },
