@@ -34,16 +34,23 @@ const login = catchAsync(async (req: Request, res: Response) => {
     parsed.data
   );
 
+  // res.cookie("accessToken", accessToken, {
+  //   httpOnly: true,
+  //   secure: true,
+  //   sameSite: "none",
+  //   maxAge: 1000 * 60 * 60,
+  // });
+
   res.cookie("accessToken", accessToken, {
-    secure: true,
     httpOnly: true,
-    sameSite: "none",
-    maxAge: 1000 * 60 * 60,
+    secure: true, // MUST be true on Vercel
+    sameSite: "none", // MUST be none for cross-domain
+    maxAge: 60 * 60 * 1000,
   });
 
   res.cookie("refreshToken", refreshToken, {
-    secure: true,
     httpOnly: true,
+    secure: true,
     sameSite: "none",
     maxAge: 1000 * 60 * 60 * 24 * 30,
   });

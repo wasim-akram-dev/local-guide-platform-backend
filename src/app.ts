@@ -24,11 +24,20 @@ app.use(cookieParser());
 // );
 
 // CORS for frontend (Next.js) with cookies
+// app.use(
+//   cors({
+//     origin: config.FRONTEND_URL, // must be exact
+//     credentials: true, // <— essential for cookies
+//     methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+//   })
+// );
+
 app.use(
   cors({
-    origin: config.FRONTEND_URL, // must be exact
-    credentials: true, // <— essential for cookies
-    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+    origin: [config.FRONTEND_URL],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
