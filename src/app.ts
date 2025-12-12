@@ -8,15 +8,27 @@ import config from "./config";
 
 const app: Application = express();
 
+// Trust proxy (IMPORTANT for secure cookies on Render, Railway, Fly.io, Vercel, etc.)
+app.set("trust proxy", 1);
+
 //parser
 app.use(express.json());
-app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
+// app.use(
+//   cors({
+//     origin: config.FRONTEND_URL,
+//     credentials: true,
+//   })
+// );
+
+// CORS for frontend (Next.js) with cookies
 app.use(
   cors({
-    origin: config.FRONTEND_URL,
-    credentials: true,
+    origin: config.FRONTEND_URL, // must be exact
+    credentials: true, // <— essential for cookies
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
   })
 );
 

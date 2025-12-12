@@ -20,6 +20,8 @@ const authGuard = (...roles: ("TOURIST" | "GUIDE" | "ADMIN")[]) => {
         req.headers.authorization?.split(" ")[1] ||
         req.headers.authorization;
 
+      console.log(token, "from authGuard");
+
       if (!token) {
         throw new ApiError(httpStatus.UNAUTHORIZED, "No token provided");
       }
