@@ -15,8 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: "https://locana-delta.vercel.app",
-    // origin: ["http://localhost:3000", "https://locana-delta.vercel.app"],
+    origin: config.FRONTEND_URL,
     credentials: true,
   })
 );

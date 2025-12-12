@@ -20,4 +20,5 @@ export default {
     api_secret: process.env.CLOUDINARY_API_SECRET,
   },
   openRouterApiKey: process.env.OPEN_ROUTER_API_KEY,
+  FRONTEND_URL: process.env.FRONTEND_URL as string,
 };
