@@ -1,10 +1,18 @@
 import { z } from "zod";
 
 export const updateUserSchema = z.object({
-  name: z.string().optional(),
+  name: z.string().min(2).optional(),
   email: z.string().email().optional(),
-  phone: z.string().optional(),
-  address: z.string().optional(),
+  profilePic: z.string().optional(),
+  bio: z.string().optional(),
+  languages: z.array(z.string()).optional(),
+
+  // Guide-only fields (safe to keep optional)
+  expertise: z.array(z.string()).optional(),
+  dailyRate: z.number().optional(),
+
+  // Tourist-only fields
+  preferences: z.array(z.string()).optional(),
 });
 
 export const updateUserRoleSchema = z.object({
